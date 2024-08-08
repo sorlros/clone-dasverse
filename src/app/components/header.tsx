@@ -3,22 +3,27 @@
 import { Button } from "@/components/ui/button";
 import { Open_Sans } from "next/font/google";
 import Link from "next/link"
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 
 const openSans = Open_Sans({ subsets: ['latin'] })
 
 const Header = () => {
   const [showHeader, setShowHeader] = useState(true);
+  const lastScrollTop = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
+      const currentScrollTop = window.scrollY;
+      console.log("current", currentScrollTop)
+      if (currentScrollTop > lastScrollTop.current + 15) {
         setShowHeader(false);
-      } else {
+      } else if (currentScrollTop < lastScrollTop.current - 15) {
         setShowHeader(true);
       }
-    }
+
+      lastScrollTop.current = currentScrollTop;
+    };
 
     window.addEventListener('scroll', handleScroll);
 

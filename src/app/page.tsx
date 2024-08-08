@@ -3,6 +3,7 @@
 import Header from "@/app/components/header";
 import { Suspense } from "react";
 import ReactPlayer from "react-player";
+import Content1 from "./components/content-1";
 
 export default function Home() {
   return (
@@ -34,7 +35,7 @@ export default function Home() {
       </Suspense>
 
       <div className="absolute w-full h-[120vh] bg-white top-[120vh]">
-        asd
+        <Content1 />
       </div>
     </main>
   );
