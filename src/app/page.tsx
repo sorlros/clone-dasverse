@@ -3,7 +3,8 @@
 import Header from "@/app/components/header";
 import { Suspense } from "react";
 import ReactPlayer from "react-player";
-import Content1 from "./components/content-1";
+import Content1 from "@/app/components/content-1";
+import Content2 from "@/app/components/content-2";
 
 export default function Home() {
   return (
@@ -36,6 +37,9 @@ export default function Home() {
 
       <div className="absolute w-full h-[120vh] bg-white top-[120vh]">
         <Content1 />
+      </div>
+      <div className="absolute w-full h-[240vh] bg-black top-[240vh]">
+        <Content2 />
       </div>
     </main>
   );

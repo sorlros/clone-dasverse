@@ -8,12 +8,13 @@ const Content1 = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollTop = window.scrollY;
-      if (currentScrollTop > 400) {
+
+      if (showText < 1 && currentScrollTop > 400) {
         setShowText(1);
-      } else {
-        if (currentScrollTop > 700) {
-          setShowText(2);
-        }
+      } else if (showText < 2 && currentScrollTop > 700) {
+        setShowText(2);
+      } else if (showText < 3 && currentScrollTop > 900) {
+        setShowText(3);
       }
     }
 
@@ -22,14 +23,14 @@ const Content1 = () => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     }
-  }, [])
+  }, [showText])
 
   return (
     <div className="flex flex-col w-full h-full p-60">
-      <div className={`w-full h-[170px] transition-transform duration-700 items-center
-        ${showText === 1 
+      <div className={`w-full h-[170px] transition-all duration-1000 items-center
+        ${showText > 0
           ? "transform translate-y-[-100px] opacity-100"
-          : "mt-50 opacity-0"}`}
+          : "translate-y-0 opacity-0"}`}
       >
         <div className="text-5xl text-nowrap">
           <p>
@@ -41,34 +42,59 @@ const Content1 = () => {
       </div>
 
       <div className="w-full py-20">
-        <div className="flex flex-col space-y-4 text-white text-ellipsis text-center items-center">
-          <div className="flex space-x-4">
-            <div className="w-[225px] h-[200px] bg-black">
-              DAS-SPACE
+        <div className="flex flex-col space-y-12 text-white text-ellipsis text-center items-center">
+          <div className={`flex space-x-4 transition-all duration-1000
+            ${showText > 1
+              ? "transform translate-y-[-100px] opacity-100" 
+              : "translate-y-0 opacity-0"
+            }`}>
+            <div className="flex flex-col w-[225px] h-[200px] bg-black items-center justify-center">
+              <span className="mb-5 font-bold text-xl">DAS-SPACE</span>
+                <p>디지털 트윈</p>
+                <p>기획·구축</p>
             </div>
-            <div className="w-[225px] h-[200px] bg-black">
-              DAS-ARTWORK
+            <div className="flex flex-col w-[225px] h-[200px] bg-black items-center justify-center">
+              <span className="mb-5 font-bold text-xl text-nowrap">DAS-ARTWORK</span>
+                <p>4K~16K</p>
+                <p>디지털 아트</p>
             </div>
-            <div className="w-[225px] h-[200px] bg-black">
-              DAS-FILM
+            <div className="flex flex-col w-[225px] h-[200px] bg-black items-center justify-center">
+              <span className="mb-5 font-bold text-xl">DAS-FILM</span>
+                <p>B2B 전문</p>
+                <p>콘텐츠 제공</p>
             </div>
-            <div className="w-[225px] h-[200px] bg-black">
-              DAS-ARTIST
+            <div className="flex flex-col w-[225px] h-[200px] bg-black items-center justify-center">
+              <span className="mb-5 font-bold text-xl">DAS-ARTIST</span>
+                <p>아트</p>
+                <p>어워드·페스티벌</p>
+                <p>아티스트 커뮤니티</p>
             </div>
           </div>
 
-          <div className="flex space-x-4">
-            <div className="w-[225px] h-[200px] bg-black">
-              DAS-GROUND
+          <div className={`flex space-x-4 transition-all duration-1000
+            ${showText > 2
+              ? "transform translate-y-[-100px] opacity-100"
+              : "translate-y-0 opacity-0"
+            }`}>
+            <div className="flex flex-col w-[225px] h-[200px] bg-black items-center justify-center">
+              <span className="mb-5 font-bold text-xl">DAS-GROUND</span>
+                <p>디지털 복합</p>
+                <p>전시 공간</p>
             </div>
-            <div className="w-[225px] h-[200px] bg-black">
-              DAS-LAB
+            <div className="flex flex-col w-[225px] h-[200px] bg-black items-center justify-center">
+              <span className="mb-5 font-bold text-xl">DAS-LAB</span>
+                <p>디지털 콘텐츠</p>
+                <p>연구소</p>
             </div>
-            <div className="w-[225px] h-[200px] bg-black">
-              DAS-TECH
+            <div className="flex flex-col w-[225px] h-[200px] bg-black items-center justify-center">
+              <span className="mb-5 font-bold text-xl">DAS-TECH</span>
+                <p>블록체인 기반</p>
+                <p>콘텐츠 플랫봄 솔루션</p>
             </div>
-            <div className="w-[225px] h-[200px] bg-black">
-              DAS-HUB
+            <div className="flex flex-col w-[225px] h-[200px] bg-black items-center justify-center">
+              <span className="mb-5 font-bold text-xl">DAS-HUB</span>
+                <p>디지털 아트</p>
+                <p>허브</p>
             </div>
           </div>
         </div>

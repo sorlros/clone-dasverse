@@ -15,7 +15,8 @@ const Header = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollTop = window.scrollY;
-      console.log("current", currentScrollTop)
+      console.log("ASDASD", currentScrollTop)
+      
       if (currentScrollTop > lastScrollTop.current + 15) {
         setShowHeader(false);
       } else if (currentScrollTop < lastScrollTop.current - 15) {
@@ -31,8 +32,8 @@ const Header = () => {
   }, [])
 
   return (
-    <div className={`flex w-full h-[100px] justify-center items-center bg-black bg-opacity-50 border-b-[1px] border-white fixed top-0
-    ${showHeader ? "block transition-transform duration-900" : "hidden transition-transform duration-900"}`}
+    <div className={`flex w-full h-[100px] justify-center items-center bg-black bg-opacity-80 border-b-[1px]  fixed top-0 transition-transform duration-700 z-[9999]
+    ${showHeader ? "translate-y-0" : "-translate-y-full"}`}
     >  
       <ul className={`${openSans.className} flex w-[1069px] h-full mx-auto items-center gap-x-4 text-white text-[14px]`}>
         <Link href="/about">ABOUT</Link>
