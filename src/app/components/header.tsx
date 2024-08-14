@@ -15,7 +15,7 @@ const Header = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollTop = window.scrollY;
-      console.log("ASDASD", currentScrollTop)
+      // console.log("ASDASD", currentScrollTop)
       
       if (currentScrollTop > lastScrollTop.current + 15) {
         setShowHeader(false);

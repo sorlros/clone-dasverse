@@ -18,7 +18,7 @@ export default function Home() {
               loop
               muted
               width="100%"
-              height="140%"
+              height="120%"
               className="react-player"
             />
             <div className="absolute top-[40%] left-1/2 transform -translate-x-1/2 z-10 text-white p-4">
@@ -38,7 +38,7 @@ export default function Home() {
       <div className="absolute w-full h-[120vh] bg-white top-[120vh]">
         <Content1 />
       </div>
-      <div className="absolute w-full h-[240vh] bg-black top-[240vh]">
+      <div className="absolute w-full h-[360vh] bg-black top-[240vh]">
         <Content2 />
       </div>
     </main>
