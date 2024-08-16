@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Message {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  createdAt DateTime @default(now())
+  userId    String   
+  response  Boolean  @default(false)
+  adminMessages AdminMessage[] @relation("AdminMessages")
+
+  @@index([userId])
+}
+
+model Admin {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  adminId  String   @unique
+  messages AdminMessage[] @relation("AdminAccount")
+}
+
+model AdminMessage {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  createdAt DateTime @default(now())
+  adminId   String
+  admin     Admin    @relation("AdminAccount", fields: [adminId], references: [adminId])
+  messageId String   @db.ObjectId
+  message   Message  @relation("AdminMessages", fields: [messageId], references: [id])
+
+  @@index([adminId])
+  @@index([messageId])
+}
