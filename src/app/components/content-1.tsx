@@ -33,12 +33,12 @@ const Content1 = () => {
           : "translate-y-0 opacity-0"}`}
       >
         <div className="text-5xl text-nowrap">
-          <p>
+          <div>
             <span>다스버스가 </span>
             <span className="font-bold">만드는 세상은</span>
-            <p className="font-bold mt-5">이렇습니다.</p>
-          </p>
-        </div>  
+            <div className="font-bold mt-5">이렇습니다.</div>
+          </div>
+        </div>
       </div>
 
       <div className="w-full py-20">

@@ -12,25 +12,24 @@ interface VideoSectionProps {
 }
 
 const VideoSection = ({
-  videoNumber, title, subtitle, content, textColor, buttonColor, buttonTextColor}: VideoSectionProps) => {
+  videoNumber, title, subtitle, content, textColor = 'white', buttonColor = 'white', buttonTextColor = 'black'
+}: VideoSectionProps) => {
   return (
-    <div className="w-full h-full bg-black">
-      <div className="sticky top-10 w-full h-full">
+    <div className="relative w-full h-full bg-black">
+      <div className="sticky top-0 w-full h-full">
         <video autoPlay loop muted className="w-full h-full object-cover">
           <source src={`/videos/content-${videoNumber}-bg-video.mp4`} />
         </video>
       </div>
-      <div className={`w-full h-full text-${textColor} font-bold absolute top-[20%] text-center`}>
-        <p>
-          <span className="text-2xl">{title}</span>
-          <h1 className="text-6xl mt-6 mb-8">{subtitle}</h1>
-          <span className="text-2xl">{content}</span>
-        </p>
+      <div className={`absolute top-[20%] left-1/2 transform -translate-x-1/2 text-center text-${textColor} font-bold w-full`}>
+        <div className="text-2xl">{title}</div>
+        <h1 className="text-6xl mt-6 mb-8">{subtitle}</h1>
+        <div className="text-2xl">{content}</div>
       </div>
       <div className="absolute top-[60%] left-1/2 transform -translate-x-1/2">
         <Button 
-          className={`bg-transparent outline outline-2 outline-${buttonColor} rounded-full
-            text-${buttonTextColor} text-[16px] hover:text-white`} 
+          className={`bg-transparent outline outline-2 rounded-full text-${buttonTextColor} text-[16px] hover:text-white`}
+          style={{ outlineColor: buttonColor }}
           size="lg">
           LEARN MORE
         </Button>

@@ -15,19 +15,8 @@ const sendMessage = async ({userId, content}: SendMessagesProps) => {
         content
       }
     })
-
-    const groupedMessages = messages.reduce((acc, message) => {
-      if (!acc[message.userId]) {
-        acc[message.userId] = [];
-      }
-      acc[message.userId].push(message);
-      return acc;
-    }, {} as Record<string, typeof messages>);
-
-    console.log("userId 별 유저메세지들 :", groupedMessages);
-    return groupedMessages;
   } catch (error) {
-    console.error("getUnrespondedMessages 오류:", error);
+    
   }
 }
 

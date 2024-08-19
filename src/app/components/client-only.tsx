@@ -3,20 +3,20 @@
 import { useState, useEffect } from 'react'
  
 const ClientOnly = ({children}: {children: React.ReactNode}) => {
-  const [isClient, setIsClient] = useState(false)
+  const [hasMounted, setHasMounted] = useState(false)
  
   useEffect(() => {
-    setIsClient(true)
+    setHasMounted(true)
   }, [])
   
-  if (!isClient) {
+  if (!hasMounted) {
     return null;
   }
   
   return (
-    <div>
+    <>
       {children}
-    </div>
+    </>
   )
 }
 
