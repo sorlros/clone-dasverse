@@ -2,11 +2,14 @@
 
 import { db } from "@/lib/prisma/db";
 
-const getAdminMessageByUserId = async (userId: string) => {
+const getAdminMessagesByUserId = async (userId: string) => {
   try {
-    const messages = await db.message.findMany({
+    const messages = await db.adminMessage.findMany({
       where: {
-        userId
+        clientMessage: {
+          userId,
+          response: true
+        }
       },
       orderBy: {
         createdAt: "asc"
@@ -19,4 +22,4 @@ const getAdminMessageByUserId = async (userId: string) => {
   }
 }
 
-export default getAdminMessageByUserId
+export default getAdminMessagesByUserId

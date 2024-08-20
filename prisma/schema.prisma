@@ -13,7 +13,7 @@ model Message {
   createdAt DateTime @default(now())
   userId    String   
   response  Boolean  @default(false)
-  adminMessages AdminMessage[] @relation("AdminMessages")
+  adminResponses AdminMessage[] @relation("MessageAdminResponses")
 
   @@index([userId])
 }
@@ -21,18 +21,18 @@ model Message {
 model Admin {
   id       String   @id @default(auto()) @map("_id") @db.ObjectId
   adminId  String   @unique
-  messages AdminMessage[] @relation("AdminAccount")
+  sentMessages AdminMessage[] @relation("AdminSentMessages")
 }
 
 model AdminMessage {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  content   String
-  createdAt DateTime @default(now())
-  adminId   String
-  admin     Admin    @relation("AdminAccount", fields: [adminId], references: [adminId])
-  messageId String   @db.ObjectId
-  message   Message  @relation("AdminMessages", fields: [messageId], references: [id])
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  content         String
+  createdAt       DateTime @default(now())
+  adminId         String   
+  admin           Admin    @relation("AdminSentMessages", fields: [adminId], references: [adminId])
+  clientMessageId String   @db.ObjectId
+  clientMessage   Message  @relation("MessageAdminResponses", fields: [clientMessageId], references: [id])
 
   @@index([adminId])
-  @@index([messageId])
+  @@index([clientMessageId])
 }

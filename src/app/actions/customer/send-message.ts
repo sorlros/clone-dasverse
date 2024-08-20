@@ -9,14 +9,16 @@ interface SendMessagesProps {
 
 const sendMessage = async ({userId, content}: SendMessagesProps) => {
   try {
-    const createMessage = await db.message.create({
+    const message = await db.message.create({
       data: {
         userId,
         content
       }
     })
+
+    console.log("sendMessage 생성: ", message);
   } catch (error) {
-    
+    console.error("sendMessage 오류: ", error);
   }
 }
 

@@ -8,8 +8,8 @@ import { MdSend } from "react-icons/md";
 import { useCallback, useEffect, useState } from "react";
 import sendMessage from "@/app/actions/customer/send-message";
 import createUserId from "@/lib/create-userId";
-import getMessageByUserId from "@/app/actions/admin/get-message-by-userId";
-import getAdminMessageByUserId from "@/app/actions/admin/get-message-by-userId";
+import getAdminMessagesByUserId from "@/app/actions/admin/get-message-by-userId";
+import getClientMessagesByUserId from "@/app/actions/customer/get-message-by-userId";
 
 interface MessageProps {
   id: string;
@@ -24,28 +24,32 @@ interface AdminMessageProps {
   content: string;
   createdAt: Date;
   adminId: string;
-  messageId: string;
+  clientMessageId: string;
 }
 
 const MessageModal = () => {
   const { onClose } = useMessage();
   const [content, setContent] = useState("");
-  const [messages, setMessages] = useState<(MessageProps | AdminMessageProps)[]>([]);
+  const [messages, setMessages] = useState<(MessageProps)[]>([]);
+  const [adminMessages, setAdminMessages] = useState<(AdminMessageProps)[]>([]);
+  const [allMessage, setAllMessage] = useState<any[]>([]);
   const userId = localStorage.getItem("userId");
   
   const fetchMessages = useCallback(async () => {
     if (!userId) return;
 
     try {
-      const adminMessages = (await getAdminMessageByUserId(userId)) || [];
-      const userMessages = (await getMessageByUserId(userId)) || [];
-
+      const adminMessages = (await getAdminMessagesByUserId(userId)) || [];
+      setAdminMessages(adminMessages);
+      const userMessages = (await getClientMessagesByUserId(userId)) || [];
+      setMessages(userMessages);
+  
+      // client 메세지와 admin 메시지를 통합후 시간 순으로 정렬
       const allMessages = [...userMessages, ...adminMessages].sort(
         (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
       );
-
-      // 중복된 메시지 필터링
-      setMessages(allMessages);
+      
+      setAllMessage(allMessages);
     } catch (error) {
       console.error("fetchMessages 오류", error);
     }
@@ -53,34 +57,52 @@ const MessageModal = () => {
 
   useEffect(() => {
     fetchMessages();
-  }, []);
+
+    const interval = setInterval(() => {
+      fetchMessages();
+    }, 10000); // admin이 보낸 메세지를 나타낼수있게 10초마다 메세지 업데이트 확인
+
+    return () => clearInterval(interval);
+  }, [fetchMessages]);
+
+  // useEffect(() => {
+  //   console.log("mesagges: ", messages);
+  // }, [messages])
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleClickEnter();
+    }
+  };
 
   const submitMessage = useCallback(async () => {
     try {
       if (content.trim() === "" || !userId) return;
 
+      const newMessage = {
+        id: Date.now().toString(),
+        content,
+        createdAt: new Date(),
+        userId,
+        response: false,
+      };
+
       await sendMessage({ userId, content });
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { id: Date.now().toString(), content, createdAt: new Date(), userId, response: false },
-      ]);
+
+      setAllMessage([...allMessage, newMessage]);
     } catch (error) {
       console.error("submitMessage 오류", error);
     } finally {
       setContent("");
     }
-  }, [content, userId]);
+  }, [handleKeyDown]);
 
-  const handleClickEnter = useCallback(() => {
+  const handleClickEnter = () => {
     submitMessage();
-  }, [submitMessage]);
+  };
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      handleClickEnter();
-    }
-  }, [handleClickEnter]);
+
 
   return (
     <div className="fixed bottom-5 right-5 flex items-center justify-center rounded-3xl">
@@ -97,7 +119,7 @@ const MessageModal = () => {
         </div>
 
         <div className="flex flex-col max-w-full h-[360px] py-2 px-6 bg-neutral-300 overflow-y-scroll">
-          {messages.map((message, index) => (
+          {allMessage.map((message, index) => (
             <div
               key={index}
               className={`flex mb-2 ${
