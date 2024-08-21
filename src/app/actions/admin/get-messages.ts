@@ -2,14 +2,7 @@
 
 import { db } from "@/lib/prisma/db";
 
-interface GetMessagesProps {
-  userId: string;
-  content: string;
-  createdAt: Date;
-  response: boolean;
-}
-
-const getUnrespondedMessages = async ({userId, content, createdAt, response}: GetMessagesProps) => {
+const getUnrespondedMessages = async () => {
   try {
     const messages = await db.message.findMany({
       where: {
@@ -22,6 +15,7 @@ const getUnrespondedMessages = async ({userId, content, createdAt, response}: Ge
       ]
     })
 
+    // 응답되지 않은 메세지들을 userId로 그룹화
     const groupedMessages = messages.reduce((acc, message) => {
       if (!acc[message.userId]) {
         acc[message.userId] = [];

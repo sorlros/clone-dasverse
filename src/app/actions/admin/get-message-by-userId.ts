@@ -6,16 +6,13 @@ const getAdminMessagesByUserId = async (userId: string) => {
   try {
     const messages = await db.adminMessage.findMany({
       where: {
-        clientMessage: {
-          userId,
-          response: true
-        }
+        userId,
       },
       orderBy: {
         createdAt: "asc"
       }
     })
-
+    console.log("응답한 admin 메세지 호출 완료");
     return messages;
   } catch (error) {
     console.error("getMessageByUserId 오류: ", error);

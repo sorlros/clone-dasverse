@@ -17,6 +17,7 @@ const sendMessage = async ({userId, content}: SendMessagesProps) => {
     })
 
     console.log("sendMessage 생성: ", message);
+    return message;
   } catch (error) {
     console.error("sendMessage 오류: ", error);
   }

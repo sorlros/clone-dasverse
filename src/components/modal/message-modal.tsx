@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button";
 import { MdSend } from "react-icons/md";
 import { useCallback, useEffect, useState } from "react";
-import sendMessage from "@/app/actions/customer/send-message";
+import sendMessage from "@/app/actions/customer/create-message";
 import createUserId from "@/lib/create-userId";
 import getAdminMessagesByUserId from "@/app/actions/admin/get-message-by-userId";
 import getClientMessagesByUserId from "@/app/actions/customer/get-message-by-userId";
@@ -24,7 +24,7 @@ interface AdminMessageProps {
   content: string;
   createdAt: Date;
   adminId: string;
-  clientMessageId: string;
+  userId: string;
 }
 
 const MessageModal = () => {
@@ -40,6 +40,7 @@ const MessageModal = () => {
 
     try {
       const adminMessages = (await getAdminMessagesByUserId(userId)) || [];
+      console.log("admin메세지", adminMessages);
       setAdminMessages(adminMessages);
       const userMessages = (await getClientMessagesByUserId(userId)) || [];
       setMessages(userMessages);
@@ -63,7 +64,7 @@ const MessageModal = () => {
     }, 10000); // admin이 보낸 메세지를 나타낼수있게 10초마다 메세지 업데이트 확인
 
     return () => clearInterval(interval);
-  }, [fetchMessages]);
+  }, []);
 
   // useEffect(() => {
   //   console.log("mesagges: ", messages);
@@ -80,17 +81,8 @@ const MessageModal = () => {
     try {
       if (content.trim() === "" || !userId) return;
 
-      const newMessage = {
-        id: Date.now().toString(),
-        content,
-        createdAt: new Date(),
-        userId,
-        response: false,
-      };
-
-      await sendMessage({ userId, content });
-
-      setAllMessage([...allMessage, newMessage]);
+      const newMessage = await sendMessage({ userId, content });
+      newMessage && fetchMessages();
     } catch (error) {
       console.error("submitMessage 오류", error);
     } finally {

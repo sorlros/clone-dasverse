@@ -1,3 +1,4 @@
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,6 +14,7 @@ model Message {
   createdAt DateTime @default(now())
   userId    String   
   response  Boolean  @default(false)
+  adminResponses AdminMessage[] @relation("MessageAdminResponses")
 
   @@index([userId])
 }
@@ -26,11 +28,13 @@ model Admin {
 model AdminMessage {
   id              String   @id @default(auto()) @map("_id") @db.ObjectId
   content         String
-  createdAt       DateTime @default(now())   
+  createdAt       DateTime @default(now())
   userId          String
   adminId         String   
-  admin           Admin    @relation("AdminSentMessages", fields: [adminId], references: [adminId]) 
+  admin           Admin    @relation("AdminSentMessages", fields: [adminId], references: [adminId])
+  clientMessageId String   @db.ObjectId
+  clientMessage   Message  @relation("MessageAdminResponses", fields: [clientMessageId], references: [id])
 
   @@index([adminId])
-  @@index([userId])
+  @@index([clientMessageId])
 }
