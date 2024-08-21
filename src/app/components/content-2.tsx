@@ -56,6 +56,7 @@ const Content2 = () => {
         style={{
           width: width,
         }}
+        id="dasverse"
       >
         <VideoSection 
           videoNumber={1}
@@ -68,7 +69,7 @@ const Content2 = () => {
         />
       </div>
 
-      <div className="relative w-full h-[120vh]">
+      <div className="relative w-full h-[120vh]" id="dailyartstory">
         <VideoSection 
           videoNumber={2}
           title="SERVICE 02"
@@ -80,7 +81,7 @@ const Content2 = () => {
         />
       </div>
 
-      <div className="relative w-full h-[120vh]">
+      <div className="relative w-full h-[120vh]" id="artcomplex">
         <VideoSection 
           videoNumber={3}
           title="SERVICE 03"

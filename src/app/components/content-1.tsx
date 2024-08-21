@@ -26,7 +26,7 @@ const Content1 = () => {
   }, [showText])
 
   return (
-    <div className="flex flex-col w-full h-full p-60">
+    <div className="flex flex-col w-full h-full p-60" id="about">
       <div className={`w-full h-[170px] transition-all duration-1000 items-center
         ${showText > 0
           ? "transform translate-y-[-100px] opacity-100"
